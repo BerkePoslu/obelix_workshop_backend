@@ -20,7 +20,6 @@ class ObelixWebshopApplicationTests {
 	private WebTestClient webTestClient;
 
 	@Test
-	@org.junit.jupiter.api.Disabled("requires running basket+quarry services")
 	void buyMenhir() {
 		var anyId = webTestClient.get()
 				.uri("/api/menhirs")

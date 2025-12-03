@@ -47,14 +47,16 @@ public class BasketService {
 	}
 
 	public boolean isGoodOffer(DecorativenessDto decorativeness) {
-		var stoneWorth = decorativeness.ordinal();
-		var basketWorth = basket.items()
-				.stream().map(x -> switch (x.name().toLowerCase(Locale.ROOT)) {
+		int stoneWorth = decorativeness.ordinal();
+		int basketWorth = basket.items()
+				.stream()
+				.mapToInt(x -> switch (x.name().toLowerCase(Locale.ROOT)) {
 					case "boar" -> 5;
 					case "honey" -> 2;
 					case "magic potion" -> 0;
 					default -> 1;
-				} * x.count()).reduce(0, Integer::sum);
+				} * x.count())
+				.sum();
 		log.info("basket worth {} vs menhir worth {} ({})", basketWorth, decorativeness, stoneWorth);
 		return basketWorth >= stoneWorth;
 	}
