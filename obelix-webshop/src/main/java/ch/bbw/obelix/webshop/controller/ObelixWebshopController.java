@@ -3,15 +3,14 @@ package ch.bbw.obelix.webshop.controller;
 import java.util.List;
 import java.util.UUID;
 
+import ch.bbw.obelix.quarry.api.dto.MenhirDto;
 import ch.bbw.obelix.webshop.dto.BasketDto;
-import ch.bbw.obelix.webshop.dto.MenhirDto;
-import ch.bbw.obelix.webshop.entity.MenhirEntity;
-import ch.bbw.obelix.webshop.repository.MenhirRepository;
 import ch.bbw.obelix.webshop.service.ObelixWebshopService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.StandardException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +25,6 @@ public class ObelixWebshopController {
 
 	private final ObelixWebshopService obelixWebshopService;
 
-	private final MenhirRepository menhirRepository;
-
 	@GetMapping("/api")
 	public String welcome() {
 		return "Welcome to Obelix's Menhir Shop! The finest menhirs in all of Gaul! Ces Romains sont fous!";
@@ -35,15 +32,12 @@ public class ObelixWebshopController {
 
 	@GetMapping("/api/menhirs")
 	public List<MenhirDto> getAllMenhirs() {
-		return menhirRepository.findAll()
-				.stream().map(MenhirEntity::toDto).toList();
+		return obelixWebshopService.getAllMenhirs();
 	}
 
 	@GetMapping("/api/menhirs/{menhirId}")
 	public MenhirDto getMenhirById(@PathVariable UUID menhirId) {
-		return menhirRepository.findById(menhirId)
-				.map(MenhirEntity::toDto)
-				.orElseThrow(() -> new UnknownMenhirException("unknwon menhir with id " + menhirId));
+		return obelixWebshopService.getMenhirById(menhirId);
 	}
 
 	/**
@@ -52,7 +46,7 @@ public class ObelixWebshopController {
 	 */
 	@DeleteMapping("/api/quarry/{menhirId}")
 	public void deleteById(@PathVariable UUID menhirId) {
-		menhirRepository.deleteById(menhirId);
+		obelixWebshopService.deleteById(menhirId);
 	}
 
 	/**
@@ -80,6 +74,11 @@ public class ObelixWebshopController {
 	@PostMapping("/api/basket/buy/{menhirId}")
 	public void exchangeFor(@PathVariable UUID menhirId) {
 		obelixWebshopService.exchange(menhirId);
+	}
+
+	@ExceptionHandler(ObelixWebshopService.BadOfferException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public void handleBadOffer() {
 	}
 
 	@StandardException
