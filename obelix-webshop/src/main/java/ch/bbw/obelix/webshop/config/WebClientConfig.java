@@ -1,5 +1,6 @@
 package ch.bbw.obelix.webshop.config;
 
+import ch.bbw.obelix.basket.api.BasketApi;
 import ch.bbw.obelix.quarry.api.QuarryApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,5 +37,28 @@ public class WebClientConfig {
 		var adapter = WebClientAdapter.create(quarryWebClient);
 		var factory = HttpServiceProxyFactory.builderFor(adapter).build();
 		return factory.createClient(QuarryApi.class);
+	}
+
+	@Bean
+	public WebClient basketWebClient(@Value("${obelix.basket.base-url}") String baseUrl) {
+		log.info("configuring basket webclient with base-url: {}", baseUrl);
+		return WebClient.builder()
+				.baseUrl(baseUrl)
+				.defaultStatusHandler(
+						status -> status.is4xxClientError() || status.is5xxServerError(),
+						clientResponse -> {
+							log.error("error calling basket service: status={}", clientResponse.statusCode());
+							return clientResponse.createException()
+									.doOnNext(ex -> log.error("basket service error details", ex));
+						}
+				)
+				.build();
+	}
+
+	@Bean
+	public BasketApi basketWebclient(WebClient basketWebClient) {
+		var adapter = WebClientAdapter.create(basketWebClient);
+		var factory = HttpServiceProxyFactory.builderFor(adapter).build();
+		return factory.createClient(BasketApi.class);
 	}
 }

@@ -1,4 +1,7 @@
 include('obelix-common')
 include('obelix-quarry-api')
 include('obelix-quarry-impl')
+include('obelix-basket-api')
+include('obelix-basket-impl')
 include('obelix-webshop')
+

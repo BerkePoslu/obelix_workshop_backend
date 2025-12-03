@@ -1,12 +1,16 @@
 spring:
   application:
-    name: webshop
+    name: basket
   profiles:
     active: common
 server:
-  port: 8080
+  port: 8082
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
   tracing:
     sampling:
       probability: 1.0
@@ -17,5 +21,3 @@ management:
 obelix:
   quarry:
     base-url: http://localhost:8081
-  basket:
-    base-url: http://localhost:8082

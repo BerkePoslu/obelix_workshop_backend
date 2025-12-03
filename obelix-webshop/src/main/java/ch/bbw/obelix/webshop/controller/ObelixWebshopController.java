@@ -3,8 +3,9 @@ package ch.bbw.obelix.webshop.controller;
 import java.util.List;
 import java.util.UUID;
 
+import ch.bbw.obelix.basket.api.BasketApi;
+import ch.bbw.obelix.basket.api.dto.BasketDto;
 import ch.bbw.obelix.quarry.api.dto.MenhirDto;
-import ch.bbw.obelix.webshop.dto.BasketDto;
 import ch.bbw.obelix.webshop.service.ObelixWebshopService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.StandardException;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ObelixWebshopController {
 
 	private final ObelixWebshopService obelixWebshopService;
+	private final BasketApi basketWebclient;
 
 	@GetMapping("/api")
 	public String welcome() {
@@ -54,32 +56,20 @@ public class ObelixWebshopController {
 	 */
 	@PutMapping("/api/basket/offer")
 	public BasketDto offer(@RequestBody BasketDto.BasketItem basketItem) {
-		return obelixWebshopService.offer(basketItem);
+		return basketWebclient.offer(basketItem);
 	}
 
-	/**
-	 * In case the customer doesn't want to offer more and leaves.
-	 */
 	@DeleteMapping("/api/basket")
 	public void leave() {
-		obelixWebshopService.leave();
+		basketWebclient.leave();
 	}
 
-	/**
-	 * Decide if the current basket is worthy enough for a beautiful menhir.
-	 *
-	 * @param menhirId the menhir to buy
-	 * @throws ObelixWebshopService.BadOfferException in case the basket is tiny
-	 */
 	@PostMapping("/api/basket/buy/{menhirId}")
 	public void exchangeFor(@PathVariable UUID menhirId) {
 		obelixWebshopService.exchange(menhirId);
 	}
 
-	@ExceptionHandler(ObelixWebshopService.BadOfferException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public void handleBadOffer() {
-	}
+
 
 	@StandardException
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

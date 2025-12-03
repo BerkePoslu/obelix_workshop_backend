@@ -1,8 +1,8 @@
 package ch.bbw.obelix.webshop;
 
+import ch.bbw.obelix.basket.api.dto.BasketDto;
 import ch.bbw.obelix.quarry.api.dto.MenhirDto;
 import ch.bbw.obelix.webshop.config.TestQuarryConfig;
-import ch.bbw.obelix.webshop.dto.BasketDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,7 @@ class ObelixWebshopApplicationTests {
 	private WebTestClient webTestClient;
 
 	@Test
-	@org.junit.jupiter.api.Disabled("requires running quarry service on port 8081")
+	@org.junit.jupiter.api.Disabled("requires running basket+quarry services")
 	void buyMenhir() {
 		var anyId = webTestClient.get()
 				.uri("/api/menhirs")
