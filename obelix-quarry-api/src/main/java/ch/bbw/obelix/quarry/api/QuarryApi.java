@@ -3,19 +3,19 @@ package ch.bbw.obelix.quarry.api;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.service.annotation.DeleteExchange;
+import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import ch.bbw.obelix.quarry.api.dto.MenhirDto;
+import ch.bbw.obelix.quarry.dto.MenhirDto;
 
 public interface QuarryApi {
-    @GetMapping("/api/menhirs")
-    public List<MenhirDto> getAllMenhirs();
+    @GetExchange("/api/menhirs")
+    List<MenhirDto> getAllMenhirs();
 
-    @GetMapping("/api/menhirs/{menhirId}")
-    public MenhirDto getMenhirById(@PathVariable UUID menhirId);
+    @GetExchange("/api/menhirs/{menhirId}")
+    MenhirDto getMenhirById(@PathVariable UUID menhirId);
 
-    @DeleteMapping("/api/quarry/{menhirId}")
-    public void deleteById(@PathVariable UUID menhirId);
+    @DeleteExchange("/api/quarry/{menhirId}")
+    void deleteById(@PathVariable UUID menhirId);
 }

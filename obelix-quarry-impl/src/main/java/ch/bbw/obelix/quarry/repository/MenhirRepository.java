@@ -12,6 +12,6 @@ public interface MenhirRepository extends JpaRepository<MenhirEntity, UUID> {
 
     List<MenhirEntity> findByStoneTypeContainingIgnoreCase(String stoneType);
 
-    List<MenhirEntity> findByDecorativeness(MenhirEntity.Decorativeness decorativeness);
+    List<MenhirEntity> findMenhirByDecorativeness(MenhirEntity.Decorativeness decorativeness);
 
 }

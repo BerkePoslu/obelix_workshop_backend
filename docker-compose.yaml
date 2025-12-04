@@ -1,0 +1,43 @@
+name: obelix
+services:
+  # build two spring images using: ./gradlew bootBuildImage
+  obelix-webshop:
+    image: obelix-webshop:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      OBELIX_QUARRY_URL: http://obelix-quarry:8081
+    depends_on:
+      - zipkin
+  obelix-quarry:
+    image: obelix-quarry-impl:0.0.1-SNAPSHOT
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - zipkin
+  zipkin:
+    image: openzipkin/zipkin:3
+    ports:
+      - "9411:9411"
+  prometheus:
+    image: prom/prometheus:v3.7.3
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus:/tmp/config/:ro
+    command: --config.file=/tmp/config/prometheus.yaml
+    depends_on:
+      - obelix-webshop
+      - obelix-quarry
+  grafana:
+    image: grafana/grafana:12.4.0-19362974299
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus

@@ -1,4 +1,4 @@
-package ch.bbw.obelix.quarry.api.dto;
+package ch.bbw.obelix.quarry.dto;
 
 public enum DecorativenessDto {
 	PLAIN, SIMPLE, DECORATED, ORNATE, MASTERWORK

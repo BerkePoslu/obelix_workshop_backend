@@ -1,7 +1,7 @@
 package ch.bbw.obelix.quarry.entity;
 
-import ch.bbw.obelix.quarry.api.dto.MenhirDto;
-import ch.bbw.obelix.quarry.api.dto.DecorativenessDto;
+import ch.bbw.obelix.quarry.dto.MenhirDto;
+import ch.bbw.obelix.quarry.dto.DecorativenessDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package ch.bbw.obelix.basket.api.dto;
+package ch.bbw.obelix.webshop.dto;
 
 import java.util.List;
 

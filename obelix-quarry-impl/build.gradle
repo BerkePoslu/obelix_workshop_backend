@@ -14,5 +14,9 @@ dependencies {
 	implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 	runtimeOnly 'com.h2database:h2'
+	
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
 }
 
